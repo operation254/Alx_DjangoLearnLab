@@ -1,10 +1,8 @@
-# Retrieve Operation
+# Retrieve
 
 ```python
 from bookshelf.models import Book
-
-# Retrieve all books
-books = Book.objects.all()
-for book in books:
-    print(book.title)
-# Output: 1984
+book = Book.objects.get(title="1984", author="George Orwell", publication_year=1949)
+(book.title, book.author, book.publication_year)
+# Expected output: ('1984', 'George Orwell', 1949)
+```

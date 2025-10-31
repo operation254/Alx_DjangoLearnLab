@@ -1,3 +1,8 @@
-# Delete a Book
-book = Book.objects.get(id=1)
-book.delete()
+# Delete
+
+```python
+from bookshelf.models import Book
+Book.objects.filter(title=\"Nineteen Eighty-Four\", author=\"George Orwell\", publication_year=1949).delete()
+list(Book.objects.all())
+# Expected output: []
+```
