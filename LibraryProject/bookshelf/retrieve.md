@@ -7,3 +7,4 @@ from bookshelf.models import Book
 books = Book.objects.all()
 print([book.title for book in books])
 # Output: ["1984"]
+```
