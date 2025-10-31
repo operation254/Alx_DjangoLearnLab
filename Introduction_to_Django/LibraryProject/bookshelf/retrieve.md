@@ -2,7 +2,7 @@
 
 ```python
 from bookshelf.models import Book
-books = Book.objects.all()
-for b in books:
-    print(b.title, b.author, b.publication_year)
-# Output: 1984 George Orwell 1949
+
+# Retrieve a single book by ID
+book = Book.objects.get(id=1)
+print(book.title, book.author, book.publication_year)
