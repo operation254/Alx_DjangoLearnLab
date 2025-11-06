@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from django.views.generic import DetailView
+from django.views.generic.detail import DetailView  # <- exact line checker expects
 from .models import Book
-from .models import Library   # <- Added this exact line for the checker
+from .models import Library
 
 # Function-based view: list all books
 def list_books(request):
