@@ -1,3 +1,4 @@
+from .models import Library
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
