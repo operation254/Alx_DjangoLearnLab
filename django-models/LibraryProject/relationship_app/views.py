@@ -51,3 +51,17 @@ def librarian_view(request):
 @user_passes_test(lambda u: _has_role(u, "Member"))
 def member_view(request):
     return render(request, "relationship_app/member_view.html")
+from django.http import HttpResponse
+from django.contrib.auth.decorators import permission_required
+
+@permission_required('relationship_app.can_add_book', raise_exception=True)
+def add_book(request):
+    return HttpResponse("add_book: allowed")
+
+@permission_required('relationship_app.can_change_book', raise_exception=True)
+def edit_book(request, pk):
+    return HttpResponse(f"edit_book {pk}: allowed")
+
+@permission_required('relationship_app.can_delete_book', raise_exception=True)
+def delete_book(request, pk):
+    return HttpResponse(f"delete_book {pk}: allowed")
