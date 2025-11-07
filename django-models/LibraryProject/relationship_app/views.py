@@ -73,3 +73,41 @@ def librarian_view(request):
 @user_passes_test(is_member)
 def member_view(request):
     return HttpResponse("Member view: only users with the 'Member' role can access.")
+from django.http import HttpResponse
+from django.views.generic import DetailView
+from django.contrib.auth.decorators import user_passes_test
+
+from .models import Book, Library
+
+# ----- Task 1 pieces (safe to keep here) -----
+def list_books(request):
+    books = Book.objects.all()
+    lines = [f"{b.title} by {b.author.name}" for b in books]
+    return HttpResponse("\n".join(lines) or "No books")
+
+class LibraryDetailView(DetailView):
+    model = Library
+    template_name = "relationship_app/library_detail.html"
+    context_object_name = "library"
+
+# ----- Task 3: role tests + restricted views -----
+def is_admin(user):
+    return hasattr(user, "profile") and user.profile.role == "Admin"
+
+def is_librarian(user):
+    return hasattr(user, "profile") and user.profile.role == "Librarian"
+
+def is_member(user):
+    return hasattr(user, "profile") and user.profile.role == "Member"
+
+@user_passes_test(is_admin)
+def admin_view(request):
+    return HttpResponse("Admin view")
+
+@user_passes_test(is_librarian)
+def librarian_view(request):
+    return HttpResponse("Librarian view")
+
+@user_passes_test(is_member)
+def member_view(request):
+    return HttpResponse("Member view")
