@@ -35,18 +35,26 @@ def _has_role(user, role):
     if not user.is_authenticated:
         return False
     try:
-        return user.userprofile.role == role   # NOTE: user.userprofile
+        return user.userprofile.role == role
     except UserProfile.DoesNotExist:
         return False
 
 @user_passes_test(lambda u: _has_role(u, "Admin"))
 def admin_view(request):
-    return HttpResponse("Admin view: only Admins can access.")
+    return HttpResponse("Admin view")
 
 @user_passes_test(lambda u: _has_role(u, "Librarian"))
 def librarian_view(request):
-    return HttpResponse("Librarian view: only Librarians can access.")
+    return HttpResponse("Librarian view")
 
 @user_passes_test(lambda u: _has_role(u, "Member"))
 def member_view(request):
-    return HttpResponse("Member view: only Members can access.")
+    return HttpResponse("Member view")
+
+def _has_role(user, role):
+    if not user.is_authenticated:
+        return False
+    try:
+        return user.userprofile.role == role   # NOTE: user.userprofile
+    except UserProfile.DoesNotExist:
+        return False
