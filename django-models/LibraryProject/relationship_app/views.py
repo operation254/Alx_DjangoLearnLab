@@ -9,10 +9,8 @@ from .models import Book, Library, UserProfile
 
 # ----- Task 1 -----
 def list_books(request):
-    # ALX checker looks for this exact call:
     books = Book.objects.all()
-    lines = [f"{b.title} by {b.author.name}" for b in books]
-    return HttpResponse("\n".join(lines) or "No books")
+    return render(request, "relationship_app/list_books.html", {"books": books})
 
 class LibraryDetailView(DetailView):
     model = Library
