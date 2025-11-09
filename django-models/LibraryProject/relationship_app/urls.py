@@ -4,7 +4,8 @@ from . import views
 
 # --- Keep these explicit imports for the ALX checker ---
 from .views import list_books
-from .views import add_book, edit_book  # checker tokens: add_book, edit_book
+from .views import add_book
+from .views import edit_book
 
 urlpatterns = [
     # Authentication routes
