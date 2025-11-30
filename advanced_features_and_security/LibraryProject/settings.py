@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'csp',         # for CSP in task 2
-    'bookshelf',   # our app
+    'LibraryProject.bookshelf',   # our app
 ]
 
 AUTH_USER_MODEL = "bookshelf.CustomUser"
