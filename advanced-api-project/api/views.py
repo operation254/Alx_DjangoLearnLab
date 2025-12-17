@@ -1,21 +1,37 @@
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, filters
+from rest_framework import generics, permissions
 
-from api.models import Author, Book
-from api.serializers import AuthorSerializer, BookSerializer
-
-
-class AuthorViewSet(viewsets.ModelViewSet):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
+from api.models import Book
+from api.serializers import BookSerializer
 
 
-class BookViewSet(viewsets.ModelViewSet):
-    queryset = Book.objects.select_related("author").all()
+class ListView(generics.ListAPIView):
+    queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [permissions.AllowAny]
 
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ["publication_year", "author"]
-    search_fields = ["title", "author__name"]
-    ordering_fields = ["publication_year", "created_at", "title"]
-    ordering = ["-created_at"]
+
+class DetailView(generics.RetrieveAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.AllowAny]
+
+
+class CreateView(generics.CreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    # Role-based: only admins/staff can create
+    permission_classes = [permissions.IsAdminUser]
+
+
+class UpdateView(generics.UpdateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    # Role-based: only admins/staff can update
+    permission_classes = [permissions.IsAdminUser]
+
+
+class DeleteView(generics.DestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    # Role-based: only admins/staff can delete
+    permission_classes = [permissions.IsAdminUser]
