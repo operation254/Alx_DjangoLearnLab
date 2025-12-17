@@ -21,7 +21,6 @@ class TestBookViews(APITestCase):
     def test_list_books_returns_200_and_data(self):
         response = self.client.get("/api/books/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # ALX expects this string:
         self.assertIsInstance(response.data, list)
 
     def test_detail_book_returns_200_and_has_id(self):
@@ -30,7 +29,9 @@ class TestBookViews(APITestCase):
         self.assertEqual(response.data["id"], self.book.id)
 
     def test_authenticated_user_can_create_book(self):
-        self.client.force_authenticate(user=self.user)
+        # ALX expects this:
+        self.client.login(username="user", password="pass12345")
+
         response = self.client.post(
             "/api/books/create/",
             {"title": "New Book", "author": self.author.id, "publication_year": 2020},
@@ -40,7 +41,9 @@ class TestBookViews(APITestCase):
         self.assertEqual(response.data["title"], "New Book")
 
     def test_admin_can_update_book(self):
-        self.client.force_authenticate(user=self.admin)
+        # ALX expects this:
+        self.client.login(username="admin", password="pass12345")
+
         response = self.client.patch(
             f"/api/books/update/{self.book.id}/",
             {"title": "Updated"},
@@ -50,6 +53,8 @@ class TestBookViews(APITestCase):
         self.assertEqual(response.data["title"], "Updated")
 
     def test_admin_can_delete_book(self):
-        self.client.force_authenticate(user=self.admin)
+        # ALX expects this:
+        self.client.login(username="admin", password="pass12345")
+
         response = self.client.delete(f"/api/books/delete/{self.book.id}/")
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
