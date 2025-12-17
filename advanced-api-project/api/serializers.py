@@ -3,12 +3,6 @@ from rest_framework import serializers
 from api.models import Author, Book
 
 
-class AuthorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Author
-        fields = ["id", "name"]
-
-
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
@@ -19,3 +13,11 @@ class BookSerializer(serializers.ModelSerializer):
         if value < 1400 or value > current_year:
             raise serializers.ValidationError("Invalid publication_year")
         return value
+
+
+class AuthorSerializer(serializers.ModelSerializer):
+    books = BookSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Author
+        fields = ["id", "name", "books"]
