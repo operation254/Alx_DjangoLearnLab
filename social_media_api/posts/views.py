@@ -1,8 +1,12 @@
-from rest_framework import generics, permissions, viewsets
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, permissions, status, viewsets
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from .models import Post, Comment
+from notifications.models import Notification
+from .models import Post, Comment, Like
 from .serializers import PostSerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly
 
@@ -35,3 +39,33 @@ class FeedView(generics.ListAPIView):
     def get_queryset(self):
         following_users = self.request.user.following.all()
         return Post.objects.filter(author__in=following_users).order_by('-created_at')
+
+
+class LikePostView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
+
+        if created and post.author != request.user:
+            Notification.objects.create(
+                recipient=post.author,
+                actor=request.user,
+                verb="liked your post",
+                target=post,
+            )
+
+        return Response({"detail": "liked"}, status=status.HTTP_200_OK)
+
+
+class UnlikePostView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        Like.objects.filter(user=request.user, post=post).delete()
+        return Response({"detail": "unliked"}, status=status.HTTP_200_OK)

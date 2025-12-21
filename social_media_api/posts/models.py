@@ -15,19 +15,21 @@ class Post(models.Model):
         return f"Post {self.id} by {self.author}"
 
 
-class Comment(models.Model):
-    post = models.ForeignKey(
-        Post,
-        on_delete=models.CASCADE,
-        related_name="comments"
-    )
-    author = models.ForeignKey(
+class Like(models.Model):
+    user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="comments"
+        related_name="likes"
     )
-    content = models.TextField()
+    post = models.ForeignKey(
+        "Post",
+        on_delete=models.CASCADE,
+        related_name="likes"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ("user", "post")
+
     def __str__(self):
-        return f"Comment {self.id} on Post {self.post_id}"
+        return f"{self.user} likes Post {self.post_id}"
