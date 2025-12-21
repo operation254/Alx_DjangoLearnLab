@@ -3,6 +3,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("accounts.urls")),
-    path("", include("posts.urls")),
+
+    # API routes (checker expects 'api/')
+    path("api/", include("accounts.urls")),
+    path("api/", include("posts.urls")),
 ]
