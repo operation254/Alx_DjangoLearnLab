@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <head><meta charset="utf-8"><title>Posts</title></head>
+  <body>
+    <h1>Posts</h1>
+
+    {% for post in posts %}
+      <article>
+        <h2><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
+        <p><strong>Author:</strong> {{ post.author }}</p>
+        <p><strong>Date:</strong> {{ post.published_date }}</p>
+        <p>{{ post.content|truncatewords:30 }}</p>
+      </article>
+      <hr>
+    {% empty %}
+      <p>No posts yet.</p>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+      <p><a href="{% url 'post_create' %}">New Post</a></p>
+    {% endif %}
+  </body>
+</html>
