@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Search</title>
+  </head>
+  <body>
+    <nav>
+      <a href="{% url 'post_list' %}">Home</a>
+    </nav>
+    <hr />
+
+    <h1>Search</h1>
+
+    <form method="get" action="{% url 'search' %}">
+      <input type="text" name="q" value="{{ q }}" placeholder="Search title, content, tags" />
+      <button type="submit">Search</button>
+    </form>
+
+    {% if q %}
+      <h2>Results for "{{ q }}"</h2>
+    {% endif %}
+
+    {% for post in posts %}
+      <h3><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h3>
+

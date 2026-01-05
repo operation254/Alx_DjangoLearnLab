@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Post Form</title>
+  </head>
+  <body>
+    <nav>
+      <a href="{% url 'post_list' %}">Home</a>
+    </nav>
+    <hr />
+
+    <h1>{% if object %}Edit Post{% else %}New Post{% endif %}</h1>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Save</button>
+    </form>
+
+    <p><a href="{% url 'post_list' %}">Back</a></p>
+  </body>
+</html>

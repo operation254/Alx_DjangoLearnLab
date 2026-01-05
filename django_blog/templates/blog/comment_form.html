@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Comment</title>
+  </head>
+  <body>
+    <nav>
+      <a href="{% url 'post_list' %}">Home</a>
+    </nav>
+    <hr />
+
+    <h1>Comment</h1>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Save</button>
+    </form>
+  </body>
+</html>

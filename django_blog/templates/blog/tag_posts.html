@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Tag: {{ tag_slug }}</title>
+  </head>
+  <body>
+    <nav>
+      <a href="{% url 'post_list' %}">Home</a>
+      <a href="{% url 'search' %}?q=">Search</a>
+    </nav>
+    <hr />
+
+    <h1>Posts tagged: {{ tag_slug }}</h1>
+
+    {% for post in posts %}
+      <h2><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
+    {% empty %}
+      <p>No posts found for this tag.</p>
+
